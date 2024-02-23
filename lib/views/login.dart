@@ -1,7 +1,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'dart:developer'as devtools show log;
+
 import 'package:flutter/material.dart';
 import 'package:trials2/constants/routs.dart';
 
@@ -76,7 +76,7 @@ class _LoginViewState extends State<LoginView> {
                 try {
                    await FirebaseAuth.instance
                       .signInWithEmailAndPassword(email: email, password: password);
-                  devtools.log("You are logged_in successfully.");
+
                   Navigator.of(context).pushNamedAndRemoveUntil(notesRoute, (route) => false);
                 } on FirebaseAuthException catch (e) {
                   // Handle "user-not-found" and "wrong-password" errors
