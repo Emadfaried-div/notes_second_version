@@ -3,6 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'dart:developer'as devtools show log;
 import 'package:flutter/material.dart';
+import 'package:trials2/constants/routs.dart';
+
+import '../utilities/showerrordialog.dart';
 
 
 
@@ -37,7 +40,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.grey[150],
       appBar: AppBar(
         title: Text("Login"),
         elevation: 0.0,
@@ -65,21 +68,28 @@ class _LoginViewState extends State<LoginView> {
             ),
             TextButton(
               style: ButtonStyle(
-                foregroundColor:
-                MaterialStateProperty.all<Color>(Colors.blue),
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
               ),
               onPressed: () async {
                 final email = _email.text;
                 final password = _password.text;
                 try {
                    await FirebaseAuth.instance
-                      .signInWithEmailAndPassword(
-                      email: email, password: password);
+                      .signInWithEmailAndPassword(email: email, password: password);
                   devtools.log("You are logged_in successfully.");
-                  Navigator.of(context).pushNamedAndRemoveUntil('/notes/', (route) => false);
-                } on FirebaseAuthException  {
-                  // Handle both "user-not-found" and "wrong-password" cases:
-                  devtools.log("Invalid email or password. Please try again.");
+                  Navigator.of(context).pushNamedAndRemoveUntil(notesRoute, (route) => false);
+                } on FirebaseAuthException catch (e) {
+                  // Handle "user-not-found" and "wrong-password" errors
+                  if (e.code == "user-not-found") {
+                    await showErrorDialog(context, "User not found."); // Use `await` if necessary
+                  } else if (e.code == "wrong-password") {
+                    await showErrorDialog(context, "Incorrect password."); // Use `await` if necessary
+                  } else {
+                    // Handle other FirebaseAuthException codes or generic error
+                    await showErrorDialog(context, "An error occurred: ${e.message}"); // Use `await` if necessary
+                  }
+                } catch (e){
+                  await showErrorDialog(context, "An error occurred: ${e.toString()}");
                 }
               },
               child: SingleChildScrollView(
@@ -99,7 +109,7 @@ class _LoginViewState extends State<LoginView> {
                     ),
                     SizedBox(height: 100.0,),
                     TextButton(onPressed: (){
-                      Navigator.of(context).pushNamedAndRemoveUntil('/register/', (route) => false);
+                      Navigator.of(context).pushNamedAndRemoveUntil(registerRoute, (route) => false);
 
                     },
                         child: const Row(
@@ -117,5 +127,6 @@ class _LoginViewState extends State<LoginView> {
         ),
       ),
     );
+
   }
 }
