@@ -18,12 +18,16 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue[200],
       appBar: AppBar(
-        title: Text("Email Verify"),
+        backgroundColor: Colors.blue[900],
+        title: Text("Email Verify",style: TextStyle(fontSize: 28,),),
+        elevation: 0.0,
       ),
       body: Column(
         children: [
-          Text("we've sent you an email verification, please open it to verify your account..",style: TextStyle(fontSize: 24),),
+
+          Text("we've sent you an email verification, please open it to verify your account..",style: TextStyle(fontSize: 24,),),
           SizedBox(height: 50,),
           Text("if you haven't received a verification email yet, please press the button below",style: TextStyle(fontSize: 24),),
           TextButton(style: ButtonStyle(
@@ -40,7 +44,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
             await FirebaseAuth.instance.signOut();
             Navigator.of(context).pushNamedAndRemoveUntil(registerRoute, (route) => false);
           },
-              child: Text("Restart"),)
+              child: Text("Restart",style: TextStyle(fontSize: 24,color: Colors.blue),),)
         ],
       ),
     );
