@@ -1,8 +1,6 @@
 
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:trials2/services/auth/auth_service.dart';
 
 import '../constants/routs.dart';
 
@@ -34,14 +32,13 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
             foregroundColor:
             MaterialStateProperty.all<Color>(Colors.blue),
           ), onPressed: () async {
-            final user = FirebaseAuth.instance.currentUser;
-            await user?.sendEmailVerification();
+            await AuthService.firebase().sendEmailVerificatoin();
           },
             child: const Text("send email verification",style: TextStyle(fontSize: 24),),
 
           ),
           TextButton(onPressed: () async {
-            await FirebaseAuth.instance.signOut();
+            await AuthService.firebase().logOut();
             Navigator.of(context).pushNamedAndRemoveUntil(registerRoute, (route) => false);
           },
               child: Text("Restart",style: TextStyle(fontSize: 24,color: Colors.blue),),)
