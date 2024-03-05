@@ -1,15 +1,9 @@
-
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:trials2/constants/routs.dart';
 import 'package:trials2/services/auth/auth_service.dart';
 import '../services/auth/auth_exceptions.dart';
 import '../utilities/showerrordialog.dart';
-
-
-
-
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -46,7 +40,7 @@ class _LoginViewState extends State<LoginView> {
         elevation: 0.0,
         backgroundColor: Colors.blue[400],
       ),
-      body: SingleChildScrollView (
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -56,7 +50,7 @@ class _LoginViewState extends State<LoginView> {
               autocorrect: false,
               keyboardType: TextInputType.emailAddress,
               decoration:
-              InputDecoration(hintText: "Enter your email here....."),
+                  InputDecoration(hintText: "Enter your email here....."),
             ),
             TextField(
               controller: _password,
@@ -64,7 +58,7 @@ class _LoginViewState extends State<LoginView> {
               enableSuggestions: false,
               autocorrect: false,
               decoration:
-              InputDecoration(hintText: "Enter your password here..."),
+                  InputDecoration(hintText: "Enter your password here..."),
             ),
             TextButton(
               style: ButtonStyle(
@@ -74,32 +68,34 @@ class _LoginViewState extends State<LoginView> {
                 final email = _email.text;
                 final password = _password.text;
                 try {
-
-                  await AuthService.firebase().lgoIn(email: email, password: password,);
-                   final user = AuthService.firebase().currentUser;
-                   if (user?.isEmailVerified ??false){
-                     //if user email verified ..
-                     Navigator.of(context).pushNamedAndRemoveUntil(notesRoute, (route) => false);
-                   }else{
+                  await AuthService.firebase().login(
+                    email: email,
+                    password: password,
+                  );
+                  final user = AuthService.firebase().currentUser;
+                  if (user?.isEmailVerified ?? false) {
+                    //if user email verified ..
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil(notesRoute, (route) => false);
+                  } else {
                     //if user emil NOT verified..
-                     Navigator.of(context).pushNamedAndRemoveUntil(emailVerifyRoute, (route) => false);
-                   }
-
-
-                } on UserNotFoundAuthException{
-                  await showErrorDialog
-                    (context,
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        emailVerifyRoute, (route) => false);
+                  }
+                } on UserNotFoundAuthException {
+                  await showErrorDialog(
+                    context,
                     "User not found.",
                   );
-
-                }on WrongPasswordAuthException{
-                  await showErrorDialog
-                    (context, "Incorrect password.",
+                } on WrongPasswordAuthException {
+                  await showErrorDialog(
+                    context,
+                    "Incorrect password.",
                   );
-                } on GenericAuthException{
-                  await showErrorDialog(context, "An error occurred: Authentication error");
+                } on GenericAuthException {
+                  await showErrorDialog(
+                      context, "An error occurred: Authentication error");
                 }
-
               },
               child: SingleChildScrollView(
                 child: Row(
@@ -109,33 +105,37 @@ class _LoginViewState extends State<LoginView> {
                       Icons.login,
                       color: Colors.grey[900], // Adjust color as needed
                       size: 20.0, // Adjust size as needed   3
-
-
                     ),
                     const Text(
                       "Login",
                       style: TextStyle(fontSize: 20, color: Colors.blueAccent),
                     ),
-                    SizedBox(height: 100.0,),
-                    TextButton(onPressed: (){
-                      Navigator.of(context).pushNamedAndRemoveUntil(registerRoute, (route) => false);
-
-                    },
+                    SizedBox(
+                      height: 100.0,
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              registerRoute, (route) => false);
+                        },
                         child: const Row(
-                          mainAxisAlignment:MainAxisAlignment.center ,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.app_registration),
-                            Text ("Not register yet? Register here.",style: TextStyle(color: Colors.blueAccent,fontSize: 19.0),),
+                            Text(
+                              "Not register yet? Register here.",
+                              style: TextStyle(
+                                  color: Colors.blueAccent, fontSize: 19.0),
+                            ),
                           ],
                         )),
                   ],
                 ),
-              ),)
-
+              ),
+            )
           ],
         ),
       ),
     );
-
   }
 }

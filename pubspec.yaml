@@ -39,10 +39,14 @@ dependencies:
   firebase_auth: ^4.17.4
   cloud_firestore: ^4.15.5
   firebase_analytics: ^10.8.6
+  sqflite: ^2.3.2
+  path_provider: ^2.1.2
+  path: ^1.8.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  test: ^1.24.9
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
